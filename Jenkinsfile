@@ -13,9 +13,6 @@ pipeline {
             steps {
                 echo 'Iniciando el despliegue interno...'
                 sh '''
-                    echo "Instalando Python 3 usando sudo..."
-                    sudo apt-get update && sudo apt-get install -y python3
-
                     echo "Creando el directorio de despliegue si no existe..."
                     mkdir -p /var/jenkins_home/deploy
 

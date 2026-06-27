@@ -13,6 +13,11 @@ pipeline {
             steps {
                 echo 'Iniciando el despliegue interno...'
                 sh '''
+                    echo "Instalando Python 3 en el contenedor de Jenkins..."
+                    # Actualiza repositorios e instala python3 sin pedir confirmación (-y)
+                    # Usamos 'su -' o comandos directos ya que Jenkins corre como root dentro del contenedor habitualmente
+                    apt-get update && apt-get install -y python3
+
                     echo "Creando el directorio de despliegue si no existe..."
                     mkdir -p /var/jenkins_home/deploy
 
@@ -31,6 +36,7 @@ pipeline {
         stage('3. Ejecutar Aplicación') {
             steps {
                 echo 'Probando la aplicación desplegada de forma local...'
+                # Ahora que está instalado, este comando sí va a funcionar
                 sh 'python3 /var/jenkins_home/deploy/app.py'
             }
         }

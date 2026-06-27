@@ -1,10 +1,28 @@
-from flask import Flask
+import platform
+import socket
+import getpass
+import os
 
-app = Flask(__name__)
+# Información básica del sistema
+usuario = getpass.getuser()
+hostname = socket.gethostname()
+sistema = platform.system()
+version = platform.version()
+arquitectura = platform.machine()
+procesador = platform.processor()
 
-@app.route('/')
-def imprimir():
-    return "Hola mundo usando venv y pip"
+# Mostrar información
+print("===================================")
+print("        HOLA MUNDO PYTHON")
+print("===================================")
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+print(f"Usuario       : {usuario}")
+print(f"Hostname      : {hostname}")
+print(f"Sistema       : {sistema}")
+print(f"Versión       : {version}")
+print(f"Arquitectura  : {arquitectura}")
+print(f"Procesador    : {procesador}")
+
+print("===================================")
+print("Programa ejecutado correctamente")
+print("===================================")

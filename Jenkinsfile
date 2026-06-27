@@ -1,22 +1,44 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build') {
+        stage('1. Clonar Código') {
             steps {
-                echo 'Instalando dependencias del proyecto...'
-                sh 'pip install -r requirements.txt'
+                echo 'Descargando el código más reciente desde GitHub...'
+                checkout scm
             }
         }
-        stage('Test') {
+
+        stage('2. Desplegar en Contenedor') {
             steps {
-                echo 'Ejecutando analisis o pruebas sobre el codigo...'
-                echo 'Pruebas finalizadas exitosamente sin errores.'
+                echo 'Iniciando el despliegue interno...'
+                sh '''
+                    echo "Creando el directorio de despliegue si no existe..."
+                    mkdir -p /var/jenkins_home/deploy
+
+                    echo "Limpiando despliegues anteriores..."
+                    rm -rf /var/jenkins_home/deploy/*
+
+                    echo "Copiando app.py al directorio de destino..."
+                    cp app.py /var/jenkins_home/deploy/
+
+                    echo "Verificando que el archivo existe en la ruta interna:"
+                    ls -l /var/jenkins_home/deploy/
+                '''
             }
         }
-        stage('Deploy') {
+
+        stage('3. Ejecutar Aplicación') {
             steps {
-                echo 'Despliegue simulado exitoso en el entorno.'
+                echo 'Probando la aplicación desplegada de forma local...'
+                sh 'python3 /var/jenkins_home/deploy/app.py'
             }
+        }
+    }
+
+    post {
+        success {
+            echo '¡Proceso finalizado! El despliegue en el contenedor fue exitoso.'
         }
     }
 }

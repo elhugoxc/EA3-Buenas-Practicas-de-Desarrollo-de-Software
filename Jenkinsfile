@@ -14,7 +14,6 @@ pipeline {
                 echo 'Iniciando el despliegue interno...'
                 sh '''
                     echo "Instalando Python 3 en el contenedor de Jenkins..."
-                    # Aquí sí se usa '#' porque es un script de Linux (sh)
                     apt-get update && apt-get install -y python3
 
                     echo "Creando el directorio de despliegue si no existe..."
@@ -35,7 +34,6 @@ pipeline {
         stage('3. Ejecutar Aplicación') {
             steps {
                 echo 'Probando la aplicación desplegada de forma local...'
-                // Corregido: Usamos '//' porque esto es Groovy de Jenkins
                 sh 'python3 /var/jenkins_home/deploy/app.py'
             }
         }
